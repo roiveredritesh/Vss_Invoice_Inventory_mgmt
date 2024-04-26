@@ -1,3 +1,4 @@
-import { status } from "./status";
+import { statuses } from "./status";
+import { businesstype } from "./businesstype";
 
-export { status };
+export default statuses;

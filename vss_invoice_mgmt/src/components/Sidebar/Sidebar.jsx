@@ -92,7 +92,7 @@ export default function Sidebar() {
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/masters/productcategorylist"
+                  to="/masters/productslist"
                 >
                   <i
                     className={
@@ -114,7 +114,7 @@ export default function Sidebar() {
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/masters/productslist"
+                  to=""
                 >
                   <i
                     className={

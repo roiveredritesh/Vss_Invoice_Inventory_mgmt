@@ -9,15 +9,15 @@ const router = createBrowserRouter([
     element: <App />,
   },
 
-  {
-    path: "/masters/productcategory",
-    element: <ProductCategory />,
-  },
+  // {
+  //   path: "/masters/productcategory",
+  //   element: <ProductCategory />,
+  // },
 
-  {
-    path: "/masters/productcategorylist",
-    element: <ProductCategoryList />,
-  },
+  // {
+  //   path: "/masters/productcategorylist",
+  //   element: <ProductCategoryList />,
+  // },
 
   {
     path: "/masters/productslist",
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
 
   {
     path: "/masters/product",
-    element: <ProductCategoryList />,
+    element: <ProductCategory />,
   },
 ]);
 
