@@ -1,10 +1,9 @@
-import "./App.css";
-import Signup from "./pages/signup/Signup.layout";
+import UserHome from "./pages/UserHome";
 
 function App() {
   return (
     <>
-      <Signup />
+      <UserHome />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "../App";
 
 const router = createBrowserRouter([
@@ -9,7 +9,11 @@ const router = createBrowserRouter([
 ]);
 
 function Navigation() {
-  return <div>Navigation</div>;
+  return (
+    <RouterProvider router={router}>
+      <App />
+    </RouterProvider>
+  );
 }
 
 export default Navigation;
