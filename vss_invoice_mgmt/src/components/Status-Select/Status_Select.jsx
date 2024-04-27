@@ -1,13 +1,22 @@
 import React from "react";
-import { statuses } from "../../constants/index";
+import { statuses } from "@/constants/index";
 
 const Status_Select = (props) => {
-  //const { classname, value } = props;
-  console.log("@Status_list", statuses);
+  const { classname, value, name, onChange } = props;
+
+  const handleStatusChange = (event) => {
+    const newValue = event.target.value;
+    onChange({
+      target: {
+        name: name,
+        value: newValue,
+      },
+    });
+  };
   return (
-    <select>
+    <select className={classname} value={value} onChange={handleStatusChange}>
       {statuses.map((status) => (
-        <option>{status}</option>
+        <option key={status}>{status}</option>
       ))}
     </select>
   );

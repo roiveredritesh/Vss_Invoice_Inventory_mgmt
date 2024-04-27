@@ -1,4 +1,4 @@
-import { statuses } from "./status";
-import { businesstype } from "./businesstype";
+import { statuses } from "./status.js";
+import { businesstype } from "./businesstype.js";
 
-export default statuses;
+export { statuses, businesstype };

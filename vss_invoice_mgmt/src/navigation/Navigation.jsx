@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import ProductCategory from "../pages/business/pages/masters/productcategory/pages/ProductCategory";
-import ProductCategoryList from "../pages/business/pages/masters/productcategory/pages/ProductCategoryList";
+import ProductCategory from "@/pages/business/pages/masters/productcategory/pages/ProductCategory";
+import ProductCategoryList from "@/pages/business/pages/masters/productcategory/pages/ProductCategoryList";
 
 const router = createBrowserRouter([
   {
@@ -20,12 +20,11 @@ const router = createBrowserRouter([
   // },
 
   {
-    path: "/masters/productslist",
+    path: "/masters/productcategorylist",
     element: <ProductCategoryList />,
   },
-
   {
-    path: "/masters/product",
+    path: "/masters/productcategory",
     element: <ProductCategory />,
   },
 ]);
