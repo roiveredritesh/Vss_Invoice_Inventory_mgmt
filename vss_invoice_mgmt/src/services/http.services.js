@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const getRequest = async (url) => {
+export const getRequest = (url) => {
   try {
-    const response = await axios.get(url);
-    const parsedResponse = await response.json();
+    const response = axios.get(url);
+    const parsedResponse = response.then((res) => res.data);
     return parsedResponse;
   } catch (err) {
     return null;
@@ -13,7 +13,8 @@ export const getRequest = async (url) => {
 export const postRequest = async (url, data, header) => {
   try {
     const response = await axios.post(url, data, header);
-    const parsedResponse = await response.json();
+    // const parsedResponse = await response.json();
+    const parsedResponse = response.then((res) => res.data);
     return parsedResponse;
   } catch (err) {
     return null;
