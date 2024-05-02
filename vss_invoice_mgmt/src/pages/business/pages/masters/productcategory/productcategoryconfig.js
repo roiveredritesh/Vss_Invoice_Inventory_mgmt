@@ -4,6 +4,7 @@ import {
 } from "@/services/apiurl";
 import { getRequest, postRequest } from "@/services/http.services";
 
+//manage passed data here
 export const GetProductCategoryList = async (
   businessid,
   pagenumber,
@@ -21,13 +22,13 @@ export const GetProductCategoryList = async (
     "&pageSize=" +
     pagesize;
   var resdata = await getRequest(url);
-  console.log("@product_category_search", resdata.data);
-  return resdata.data;
+  console.log("@product_category_search", resdata);
+  return resdata;
 };
 
 export const PostProductCategoryList = async (params, businessId) => {
   const data = { ...params, businessId: businessId };
   console.log("@postdata", data);
-  const resdata = await postRequest(AddProductCategory, params);
-  console.log("@postapiresposne", resdata);
+  const resdata = await postRequest(AddProductCategory, data);
+  return resdata;
 };

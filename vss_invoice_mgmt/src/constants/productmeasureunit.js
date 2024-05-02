@@ -1,1 +1,1 @@
-export const productmeasures = ["", "Ltr", "Grams", "KG", "Piece"];
+export const productmeasures = ["Ltr", "Grams", "KG", "Piece"];

@@ -4,11 +4,17 @@ import ProductCategory from "@/pages/business/pages/masters/productcategory/page
 import ProductCategoryList from "@/pages/business/pages/masters/productcategory/pages/ProductCategoryList";
 import ProductMaster from "@/pages/business/pages/masters/productmaster/pages/ProductMaster";
 import ProductMasterList from "@/pages/business/pages/masters/productmaster/pages/ProductMasterList";
+import UserHome from "@/pages/UserHome";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+
+  {
+    path: "/home",
+    element: <UserHome />,
   },
 
   // {

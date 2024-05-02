@@ -9,6 +9,7 @@ import FooterAdmin from "@/components/Footers/FooterAdmin";
 import Status_Select from "@/components/Status-Select/Status_Select";
 import Product_Measureunits from "@/components/Product-Measures/Product_Measureunits";
 import { Link } from "react-router-dom";
+import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
 
 const product_ValidationSchema = Yup.object().shape({
   productCategory: Yup.string().required("Please select product category"),
@@ -79,7 +80,7 @@ const ProductMaster = () => {
                 {/* Product Category Select */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 mb-6">
                   <div>
-                    <TextField //product category
+                    <Product_Category_Select
                       fullWidth
                       name="productCategory"
                       label="Product Category"
@@ -221,13 +222,14 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product Status Select */}
                   <div>
                     <Status_Select
                       name="productStatus"
                       value={formik.values.productStatus}
                       onChange={formik.handleChange}
-                      classname="shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      classname="shadow appearance-none border rounded w-full  px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                     {formik.touched.productStatus &&
                       formik.errors.productStatus && (

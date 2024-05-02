@@ -1,8 +1,13 @@
-import React from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { productmeasures } from "@/constants/productmeasureunit";
 
-const Product_Measureunits = (props) => {
-  const { className, value, name, onChange } = props;
+function Product_Measureunits(props) {
+  const { classname, value, name, onChange } = props;
 
   const handleMeasureUnitChange = (event) => {
     const newValue = event.target.value;
@@ -15,16 +20,24 @@ const Product_Measureunits = (props) => {
   };
 
   return (
-    <select
-      className={className}
-      value={value}
-      onChange={handleMeasureUnitChange}
-    >
-      {productmeasures.map((unit) => (
-        <option key={unit}>{unit}</option>
-      ))}
-    </select>
+    <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel>Units </InputLabel>
+        <Select
+          label="unit"
+          className={classname}
+          value={value}
+          onChange={handleMeasureUnitChange}
+        >
+          {productmeasures.map((unit) => (
+            <MenuItem key={unit} value={unit}>
+              {unit}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
-};
+}
 
 export default Product_Measureunits;

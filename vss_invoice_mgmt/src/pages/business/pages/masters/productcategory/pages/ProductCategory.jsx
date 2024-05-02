@@ -8,7 +8,8 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import HeaderStats from "@/components/Headers/HeaderStats";
 import FooterAdmin from "@/components/Footers/FooterAdmin";
 import StatusSelect from "@/components/Status-Select/Status_Select";
-import ToastSuccess from "@/components/Show-Messages/Toast_success";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { PostProductCategoryList } from "../productcategoryconfig";
 
@@ -25,8 +26,6 @@ const productcategory_ValidationSchema = Yup.object().shape({
 });
 
 const ProductCategory = () => {
-  const [addProductCategory, setAddProductCategory] = useState([]);
-
   const formik = useFormik({
     initialValues: {
       productCategory_Name: "",
@@ -36,17 +35,38 @@ const ProductCategory = () => {
     validationSchema: productcategory_ValidationSchema,
     onSubmit: (values) => {
       console.log("@Product Category", values);
+      toast.success("Submited!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgresBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      setTimeout(function () {
+        window.location.replace("/masters/productcategorylist");
+      }, 2000);
+      formik.resetForm();
       PostProductCategoryList(values, 1);
-      // formik.resetForm();
-      // return <ToastSuccess message="Added successfully." />;
-      // setTimeout(function () {
-      //   window.location.replace("/masters/productcategorylist");
-      // }, 1000);
     },
   });
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Sidebar />
       <div className="relative md:ml-64 bg-blueGray-100">
         <AdminNavbar />
@@ -99,7 +119,7 @@ const ProductCategory = () => {
                       name="productCategory_Status"
                       value={formik.values.productCategory_Status}
                       onChange={formik.handleChange}
-                      classname="shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      classname="shadow appearance-none border rounded w-full  px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                     {formik.touched.productCategory_Status &&
                       formik.errors.productCategory_Status && (
@@ -109,7 +129,6 @@ const ProductCategory = () => {
                       )}
                   </div>
                 </div>
-
                 <div className="flex items-end justify-end">
                   <Button type="submit" variant="contained" color="primary">
                     Add
@@ -122,7 +141,6 @@ const ProductCategory = () => {
                     Back
                   </Link>
                 </div>
-
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </form>
             </div>

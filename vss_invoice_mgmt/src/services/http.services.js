@@ -1,22 +1,25 @@
 import axios from "axios";
+//Generalized function
 
-export const getRequest = (url) => {
+export const getRequest = async (url) => {
   try {
-    const response = axios.get(url);
-    const parsedResponse = response.then((res) => res.data);
+    const response = axios.get(url); // will receive promise as response
+    const parsedResponse = await response.then((res) => res.data);
     return parsedResponse;
   } catch (err) {
+    console.log("@getmethoderror", err);
     return null;
   }
 };
 
 export const postRequest = async (url, data, header) => {
   try {
-    const response = await axios.post(url, data, header);
-    // const parsedResponse = await response.json();
-    const parsedResponse = response.then((res) => res.data);
+    const response = await axios.post(url, data, header); // will receive data as response
+    const parsedResponse = response.data;
+    console.log("@parsedResponse", parsedResponse);
     return parsedResponse;
   } catch (err) {
+    console.log("@postmethoderror", err);
     return null;
   }
 };
