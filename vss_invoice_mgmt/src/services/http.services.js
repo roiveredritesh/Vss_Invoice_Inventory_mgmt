@@ -23,3 +23,15 @@ export const postRequest = async (url, data, header) => {
     return null;
   }
 };
+
+export const putRequest = async (url, data, header) => {
+  try {
+    const response = await axios.put(url, data, header); // will receive data as response
+    const parsedResponse = response.data;
+    console.log("@parsedResponse", parsedResponse);
+    return parsedResponse;
+  } catch (err) {
+    console.log("@putmethoderror", err);
+    return null;
+  }
+};

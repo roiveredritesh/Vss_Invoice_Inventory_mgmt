@@ -1,8 +1,10 @@
 import {
   SearchProductCategoryList,
   AddProductCategory,
+  UpdateProductCategory,
 } from "@/services/apiurl";
-import { getRequest, postRequest } from "@/services/http.services";
+
+import { getRequest, postRequest, putRequest } from "@/services/http.services";
 
 //manage passed data here
 export const GetProductCategoryList = async (
@@ -20,7 +22,13 @@ export const GetProductCategoryList = async (
     "&pageNumber=" +
     pagenumber +
     "&pageSize=" +
-    pagesize;
+    pagesize +
+    "&name=" +
+    name +
+    "&code=" +
+    code +
+    "&status=" +
+    status;
   var resdata = await getRequest(url);
   console.log("@product_category_search", resdata);
   return resdata;
@@ -30,5 +38,14 @@ export const PostProductCategoryList = async (params, businessId) => {
   const data = { ...params, businessId: businessId };
   console.log("@postdata", data);
   const resdata = await postRequest(AddProductCategory, data);
+  return resdata;
+};
+
+export const PutProductCategoryList = async (id, params, businessId) => {
+  const data = { ...params, businessId: businessId };
+  const url = `${UpdateProductCategory}/${id}`;
+  console.log("@putdata", data);
+  const resdata = await putRequest(url, data);
+  console.log("@updateData", resdata);
   return resdata;
 };

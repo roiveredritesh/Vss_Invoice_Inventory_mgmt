@@ -4,13 +4,21 @@ import Sidebar from "../../../../../../components/Sidebar/Sidebar";
 import HeaderStats from "../../../../../../components/Headers/HeaderStats";
 import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
 import { NavLink } from "react-router-dom";
-import { GetProductCategoryList } from "../productcategoryconfig";
+import {
+  GetProductCategoryList,
+  PutProductCategoryList,
+} from "../productcategoryconfig";
 import { TextField, Button } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import CircularProgres from "@/components/Circular-Progress/CircularProgress";
+import axios from "axios";
 
 const ProductCategoryList = () => {
+  const [searchName, setSearchName] = useState("");
+  const [searchCode, setSearchCode] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+
   const [productcategorylist, setProductCategoryList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -28,20 +36,35 @@ const ProductCategoryList = () => {
     ],
   };
 
-  const getproductlist = async (page) => {
-    setLoading(true); //setloading true when data is fetching
-    const users = await GetProductCategoryList(1, page, itemsPerPage); //id, number of page, number of page items
+  const getproductlist = async (page, name, code, status) => {
+    setLoading(true);
+    const users = await GetProductCategoryList(
+      1,
+      page,
+      itemsPerPage,
+      name,
+      code,
+      status
+    );
     setProductCategoryList(users.data);
     settotalpages(Math.ceil(users.totalCount / itemsPerPage));
-    setLoading(false); //setloading false when data is fetched
+    setLoading(false);
   };
 
   useEffect(() => {
-    getproductlist(currentPage);
-  }, [currentPage]);
+    getproductlist(currentPage, searchName, searchCode, searchStatus);
+  }, []);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+  };
+
+  const handleEdit = (item) => {
+    console.log("Edit button clicked", item);
+  };
+
+  const handleSearch = () => {
+    getproductlist(currentPage, searchName, searchCode, searchStatus);
   };
 
   return (
@@ -73,20 +96,27 @@ const ProductCategoryList = () => {
                     label="Search Category Name"
                     type="search"
                     size="small"
+                    onChange={(e) => setSearchName(e.target.value)}
                   />
                   <TextField
                     id="search-2"
                     label="Search Category Code"
                     type="search"
                     size="small"
+                    onChange={(e) => setSearchCode(e.target.value)}
                   />
                   <TextField
                     id="search-3"
                     label="Search Category Status"
                     type="search"
                     size="small"
+                    onChange={(e) => setSearchStatus(e.target.value)}
                   />
-                  <Button variant="contained" className="button">
+                  <Button
+                    variant="contained"
+                    className="button"
+                    onClick={handleSearch}
+                  >
                     Search
                   </Button>
                 </div>
@@ -129,8 +159,8 @@ const ProductCategoryList = () => {
                           </td>
                           <td className="border px-4 py-2">
                             <button
-                              onClick={() => handleEdit(index)}
                               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                              onClick={() => handleEdit(item)}
                             >
                               Edit
                             </button>

@@ -10,7 +10,7 @@ import FooterAdmin from "@/components/Footers/FooterAdmin";
 import StatusSelect from "@/components/Status-Select/Status_Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { PostProductCategoryList } from "../productcategoryconfig";
 
 const productcategory_ValidationSchema = Yup.object().shape({
@@ -26,6 +26,9 @@ const productcategory_ValidationSchema = Yup.object().shape({
 });
 
 const ProductCategory = () => {
+  const id = useParams();
+
+  console.log("@id", id);
   const formik = useFormik({
     initialValues: {
       productCategory_Name: "",
@@ -45,9 +48,9 @@ const ProductCategory = () => {
         progress: undefined,
         theme: "dark",
       });
-      setTimeout(function () {
-        window.location.replace("/masters/productcategorylist");
-      }, 2000);
+      // setTimeout(function () {
+      //   window.location.replace("/masters/productcategorylist");
+      // }, 2000);
       formik.resetForm();
       PostProductCategoryList(values, 1);
     },

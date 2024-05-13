@@ -17,9 +17,9 @@ const product_ValidationSchema = Yup.object().shape({
   productName: Yup.string().required("Please enter product name"),
   productPrice: Yup.number().required("Please enter product price"),
   productMeasureUnit: Yup.string().required("Please select measure unit"),
-  productMinimumQty: Yup.number()
-    .required("Please enter product minimum quantity")
-    .positive("Please enter a positive number"),
+  productMinimumQty: Yup.number().required(
+    "Please enter product minimum quantity"
+  ),
   productIGST: Yup.number()
     .required("Please enter product IGST")
     .positive("Please enter a positive number"),
