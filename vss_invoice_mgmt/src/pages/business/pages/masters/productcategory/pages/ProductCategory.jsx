@@ -26,9 +26,8 @@ const productcategory_ValidationSchema = Yup.object().shape({
 });
 
 const ProductCategory = () => {
-  const id = useParams();
+  const { id } = useParams();
 
-  console.log("@id", id);
   const formik = useFormik({
     initialValues: {
       productCategory_Name: "",

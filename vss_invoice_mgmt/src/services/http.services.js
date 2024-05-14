@@ -14,6 +14,7 @@ export const getRequest = async (url) => {
 
 export const postRequest = async (url, data, header) => {
   try {
+    console.log("@posteddata", data);
     const response = await axios.post(url, data, header); // will receive data as response
     const parsedResponse = response.data;
     console.log("@parsedResponse", parsedResponse);
