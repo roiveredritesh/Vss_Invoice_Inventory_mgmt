@@ -1,1 +1,1 @@
-export const status = ["Active", "Block"];
+export const statuses = ["Active", "Block"];
