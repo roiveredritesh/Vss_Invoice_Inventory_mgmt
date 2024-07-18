@@ -10,8 +10,12 @@ import FooterAdmin from "@/components/Footers/FooterAdmin";
 import StatusSelect from "@/components/Status-Select/Status_Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useParams, useSearchParams } from "react-router-dom";
-import { PostProductCategoryList } from "../productcategoryconfig";
+import { Link, useParams } from "react-router-dom";
+import {
+  PostProductCategoryList,
+  GetProductCategoryById,
+  PutProductCategoryList,
+} from "../productcategoryconfig";
 
 const productcategory_ValidationSchema = Yup.object().shape({
   productCategory_Name: Yup.string()
@@ -27,6 +31,30 @@ const productcategory_ValidationSchema = Yup.object().shape({
 
 const ProductCategory = () => {
   const { id } = useParams();
+  const [categoryData, setCategoryData] = useState(null);
+
+  const getProductCategory = async (id) => {
+    const data = await GetProductCategoryById(id);
+    setCategoryData(data);
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      getProductCategory(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (categoryData !== null) {
+      formik.setValues({
+        productCategory_Name: categoryData.data[0].productCategory_Name || "",
+        productCategory_Code: categoryData.data[0].productCategory_Code || "",
+        productCategory_Status:
+          categoryData.data[0].productCategory_Status || "",
+      });
+      console.log("@categoryData", categoryData);
+    }
+  }, [categoryData]);
 
   const formik = useFormik({
     initialValues: {
@@ -37,21 +65,36 @@ const ProductCategory = () => {
     validationSchema: productcategory_ValidationSchema,
     onSubmit: (values) => {
       console.log("@Product Category", values);
-      toast.success("Submited!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgresBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      // setTimeout(function () {
-      //   window.location.replace("/masters/productcategorylist");
-      // }, 2000);
+
+      setTimeout(function () {
+        window.location.replace("/masters/productcategorylist");
+      }, 2000);
       formik.resetForm();
-      PostProductCategoryList(values, 1);
+      if (id == undefined) {
+        PostProductCategoryList(values, 1);
+        toast.success("Submitted!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        PutProductCategoryList(id, values);
+        toast.success("Updated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     },
   });
 

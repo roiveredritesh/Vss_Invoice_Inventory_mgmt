@@ -177,7 +177,8 @@ export default function Sidebar() {
             <hr className="my-4 md:min-w-full" />
             {/* Heading */}
             <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Auth Layout Pages
+              {/* Auth Layout Pages */}
+              Auth
             </h6>
             {/* Navigation */}
 
@@ -207,7 +208,8 @@ export default function Sidebar() {
             <hr className="my-4 md:min-w-full" />
             {/* Heading */}
             <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              No Layout Pages
+              {/* No Layout Pages */}
+              Pages Layout
             </h6>
             {/* Navigation */}
 
@@ -248,7 +250,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
-                  Styles
+                  {/* Styles */}
                 </a>
               </li>
 
@@ -259,7 +261,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fab fa-css3-alt mr-2 text-blueGray-300 text-base"></i>
-                  CSS Components
+                  {/* CSS Components */}
                 </a>
               </li>
 
@@ -270,7 +272,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fab fa-angular mr-2 text-blueGray-300 text-base"></i>
-                  Angular
+                  {/* Angular */}
                 </a>
               </li>
 
@@ -281,7 +283,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fab fa-js-square mr-2 text-blueGray-300 text-base"></i>
-                  Javascript
+                  {/* Javascript */}
                 </a>
               </li>
 
@@ -292,7 +294,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fab fa-react mr-2 text-blueGray-300 text-base"></i>
-                  NextJS
+                  {/* NextJS */}
                 </a>
               </li>
 
@@ -303,7 +305,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fab fa-react mr-2 text-blueGray-300 text-base"></i>
-                  React
+                  {/* React */}
                 </a>
               </li>
 
@@ -314,7 +316,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fas fa-link mr-2 text-blueGray-300 text-base"></i>
-                  Svelte
+                  {/* Svelte */}
                 </a>
               </li>
 
@@ -325,7 +327,7 @@ export default function Sidebar() {
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fab fa-vuejs mr-2 text-blueGray-300 text-base"></i>
-                  VueJS
+                  {/* VueJS */}
                 </a>
               </li>
             </ul>
