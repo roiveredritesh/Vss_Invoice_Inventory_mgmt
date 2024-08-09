@@ -3,7 +3,7 @@ import AdminNavbar from "../../../../../../components/Navbars/AdminNavbar";
 import Sidebar from "../../../../../../components/Sidebar/Sidebar";
 import HeaderStats from "../../../../../../components/Headers/HeaderStats";
 import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   GetProductCategoryList,
   PutProductCategoryList,
@@ -24,6 +24,8 @@ const ProductCategoryList = () => {
   const [loading, setLoading] = useState(false);
   const [totalpages, settotalpages] = useState(1);
   const itemsPerPage = 10;
+
+  const navigate = useNavigate();
 
   const tableHead = {
     col: [
@@ -57,10 +59,18 @@ const ProductCategoryList = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+    getproductlist(value, searchName, searchCode, searchStatus);
+    console.log("@values", value);
   };
 
-  const handleEdit = (item) => {
-    console.log("Edit button clicked", item);
+  const handleEdit = (id) => {
+    navigate(`/masters/productcategory/${id}`);
+    console.log("Edit button clicked", id);
+  };
+
+  const handleBlock = (id) => {
+    navigate(`/masters/productcategory/${id}`);
+    console.log("Block Button Clicked", id);
   };
 
   const handleSearch = () => {
@@ -160,14 +170,17 @@ const ProductCategoryList = () => {
                           <td className="border px-4 py-2">
                             <button
                               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                              onClick={() => handleEdit(item)}
+                              onClick={() => handleEdit(item.id)}
                             >
                               Edit
                             </button>
                           </td>
 
                           <td className="border px-4 py-2">
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button
+                              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                              onClick={() => handleBlock(item.id)}
+                            >
                               Block
                             </button>
                           </td>

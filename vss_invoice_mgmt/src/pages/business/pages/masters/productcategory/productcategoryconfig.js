@@ -2,6 +2,7 @@ import {
   SearchProductCategoryList,
   AddProductCategory,
   UpdateProductCategory,
+  ProductCategoryById,
 } from "@/services/apiurl";
 
 import { getRequest, postRequest, putRequest } from "@/services/http.services";
@@ -41,11 +42,18 @@ export const PostProductCategoryList = async (params, businessId) => {
   return resdata;
 };
 
-export const PutProductCategoryList = async (id, params, businessId) => {
-  const data = { ...params, businessId: businessId };
+export const PutProductCategoryList = async (id, params) => {
+  const data = { ...params };
   const url = `${UpdateProductCategory}/${id}`;
   console.log("@putdata", data);
   const resdata = await putRequest(url, data);
   console.log("@updateData", resdata);
+  return resdata;
+};
+
+export const GetProductCategoryById = async (id) => {
+  const url = `${ProductCategoryById}/${id}`;
+  const resdata = await getRequest(url);
+  console.log("@Product_Category_Data", resdata);
   return resdata;
 };
