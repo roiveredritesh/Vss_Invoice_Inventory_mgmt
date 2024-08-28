@@ -76,7 +76,7 @@ const ProductMaster = () => {
               </div>
             </div>
             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-              <form onSubmit={formik.handleSubmit}>
+              <form onSubmit={formik.handleSubmit} >
                 {/* Product Category Select */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 mb-6">
                   <div>
