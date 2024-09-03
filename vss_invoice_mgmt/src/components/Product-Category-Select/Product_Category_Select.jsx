@@ -23,7 +23,7 @@ export default function Product_Category_Select({ value, onChange }) {
         if (Array.isArray(data)) {
           const mappedOptions = data.map((item) => ({
             id: item.id,
-            label: `${item.id}, ${item.productCategory_Name}`,
+            label: item.productCategory_Name,
           }));
 
           setOptions(mappedOptions);
