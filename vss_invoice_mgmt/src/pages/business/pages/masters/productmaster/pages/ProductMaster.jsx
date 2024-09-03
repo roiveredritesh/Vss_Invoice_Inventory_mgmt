@@ -1,18 +1,30 @@
+//addition and updation
+import AdminNavbar from "../../../../../../components/Navbars/AdminNavbar";
+import Sidebar from "../../../../../../components/Sidebar/Sidebar";
+import HeaderStats from "../../../../../../components/Headers/HeaderStats";
+import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
+import Textarea from "@mui/joy/Textarea";
+import TextField from "@mui/material/TextField";
+import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
+import Product_Measureunits from "@/components/Product-Measures/Product_Measureunits";
+import Status_Select from "@/components/Status-Select/Status_Select";
+
+import * as Yup from "yup";
+
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
-import * as Yup from "yup";
-import { Button, TextField } from "@mui/material";
-import AdminNavbar from "@/components/Navbars/AdminNavbar";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import HeaderStats from "@/components/Headers/HeaderStats";
-import FooterAdmin from "@/components/Footers/FooterAdmin";
-import Status_Select from "@/components/Status-Select/Status_Select";
-import Product_Measureunits from "@/components/Product-Measures/Product_Measureunits";
-import { Link } from "react-router-dom";
-import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
+
+import { Button } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import { Link, useParams } from "react-router-dom";
+import {
+  PostProductList,
+  GetProductById,
+  PutProductList,
+} from "../productmasterconfig";
 
 const product_ValidationSchema = Yup.object().shape({
-  productCategory: Yup.string().required("Please select product category"),
+  productCategoryId: Yup.string().required("Please select product category Id"),
   productCode: Yup.string().required("Please enter product code"),
   productName: Yup.string().required("Please enter product name"),
   productPrice: Yup.number().required("Please enter product price"),
@@ -30,14 +42,46 @@ const product_ValidationSchema = Yup.object().shape({
     .required("Please enter product CGST")
     .positive("Please enter a positive number"),
   productStatus: Yup.string().required("Please select product status"),
+  productDescription: Yup.string().required("Please enter product description"),
 });
 
-const ProductMaster = () => {
-  const [addProduct, setAddProduct] = useState([]);
+function ProductMaster() {
+  const { id } = useParams();
+  const [productData, setProductData] = useState(null);
+
+  const getProduct = async (id) => {
+    const data = await GetProductById(id);
+    setProductData(data);
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      getProduct(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (productData !== null) {
+      formik.setValues({
+        productCategoryId: productData.data[0].productCategoryId || "",
+        productCode: productData.data[0].productCode || "",
+        productName: productData.data[0].productName || "",
+        productPrice: productData.data[0].productPrice || "",
+        productMeasureUnit: productData.data[0].productMeasureUnit || "",
+        productMinimumQty: productData.data[0].productMinimumQty || "",
+        productIGST: productData.data[0].productIGST || "",
+        productSGST: productData.data[0].productSGST || "",
+        productCGST: productData.data[0].productCGST || "",
+        productStatus: productData.data[0].productStatus || "",
+        productDescription: productData.data[0].productDescription || "",
+      });
+      console.log("@productData", productData);
+    }
+  }, [productData]);
 
   const formik = useFormik({
     initialValues: {
-      productCategory: "",
+      productCategoryId: "",
       productCode: "",
       productName: "",
       productPrice: "",
@@ -47,20 +91,58 @@ const ProductMaster = () => {
       productSGST: "",
       productCGST: "",
       productStatus: "",
+      productDescription: "",
     },
     validationSchema: product_ValidationSchema,
     onSubmit: (values) => {
-      setAddProduct([...addProduct, values]);
+      console.log("@Product", values);
+
+      setTimeout(function () {
+        window.location.replace("/master/productmasterlist");
+      }, 2000);
       formik.resetForm();
+      if (id == undefined) {
+        PostProductList(values, 1);
+        toast.success("Submitted!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        PutProductList(id, values);
+        toast.success("Updated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     },
   });
 
-  useEffect(() => {
-    localStorage.setItem("addProduct", JSON.stringify(addProduct));
-  }, [addProduct]);
-
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Sidebar />
       <div className="relative md:ml-64 bg-blueGray-100">
         <AdminNavbar />
@@ -75,25 +157,23 @@ const ProductMaster = () => {
                 </h6>
               </div>
             </div>
+
             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
               <form onSubmit={formik.handleSubmit}>
                 {/* Product Category Select */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 mb-6">
                   <div>
                     <Product_Category_Select
-                      fullWidth
-                      name="productCategory"
-                      label="Product Category"
-                      variant="outlined"
-                      value={formik.values.productCategory}
+                      value={formik.values.productCategoryId}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.productCategory && (
+                    {formik.errors.productCategoryId && (
                       <p className="text-red-500 text-xs italic">
-                        {formik.errors.productCategory}
+                        {formik.errors.productCategoryId}
                       </p>
                     )}
                   </div>
+
                   {/* Product Code */}
                   <div>
                     <TextField
@@ -110,6 +190,7 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product Name */}
                   <div>
                     <TextField
@@ -126,6 +207,7 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product Price */}
                   <div>
                     <TextField
@@ -142,6 +224,7 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product Measure Unit Select */}
                   <div>
                     <Product_Measureunits
@@ -174,6 +257,7 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product IGST */}
                   <div>
                     <TextField
@@ -190,6 +274,7 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product SGST */}
                   <div>
                     <TextField
@@ -206,6 +291,7 @@ const ProductMaster = () => {
                       </p>
                     )}
                   </div>
+
                   {/* Product CGST */}
                   <div>
                     <TextField
@@ -238,8 +324,30 @@ const ProductMaster = () => {
                         </p>
                       )}
                   </div>
-                </div>
 
+                  {/* Product Description */}
+                  <div>
+                    <Textarea
+                      name="productDescription"
+                      label="Product Description"
+                      minRows={2}
+                      variant="outlined"
+                      placeholder="Product Description"
+                      size="lg"
+                      sx={{
+                        backgroundColor: "transparent",
+                      }}
+                      value={formik.values.productDescription}
+                      onChange={formik.handleChange}
+                    />
+
+                    {formik.errors.productDescription && (
+                      <p className="text-red-500 text-xs italic">
+                        {formik.errors.productDescription}
+                      </p>
+                    )}
+                  </div>
+                </div>
                 <div className="flex items-end justify-end">
                   <Button type="submit" variant="contained" color="primary">
                     Add
@@ -263,6 +371,5 @@ const ProductMaster = () => {
       </div>
     </>
   );
-};
-
+}
 export default ProductMaster;
