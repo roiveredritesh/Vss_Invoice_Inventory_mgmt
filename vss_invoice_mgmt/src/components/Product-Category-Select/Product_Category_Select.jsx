@@ -18,7 +18,7 @@ export default function Product_Category_Select({ value, onChange }) {
           "" // status
         );
 
-        const data = response.data; // Adjust based on how your API returns data
+        const data = response.data;
 
         if (Array.isArray(data)) {
           const mappedOptions = data.map((item) => ({
@@ -44,7 +44,7 @@ export default function Product_Category_Select({ value, onChange }) {
       onChange={(event, newValue) => {
         onChange({
           target: {
-            name: "productCategoryId",
+            name: "productCategoryid",
             value: newValue ? newValue.id : "",
           },
         });

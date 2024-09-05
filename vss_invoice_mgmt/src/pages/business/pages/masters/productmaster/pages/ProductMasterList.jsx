@@ -1,9 +1,8 @@
-// show list ,search, edit, block , add link to add product category
 import React, { useEffect, useState } from "react";
-import AdminNavbar from "../../../../../../components/Navbars/AdminNavbar";
-import Sidebar from "../../../../../../components/Sidebar/Sidebar";
-import HeaderStats from "../../../../../../components/Headers/HeaderStats";
-import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
+import AdminNavbar from "@/components/Navbars/AdminNavbar";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import HeaderStats from "@/components/Headers/HeaderStats";
+import FooterAdmin from "@/components/Footers/FooterAdmin";
 import { TextField, Button } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -13,6 +12,8 @@ import {
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import CircularProgres from "@/components/Circular-Progress/CircularProgress";
+import Status_Select from "@/components/Status-Select/Status_Select";
+import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
 
 function ProductMasterList() {
   const [searchName, setSearchName] = useState("");
@@ -30,10 +31,12 @@ function ProductMasterList() {
 
   const tableHead = {
     col: [
-      "Sr No",
-      "Product Category ",
-      "Product  Name",
-      "Product  code",
+      "Sr. No.",
+      "Product Category name ",
+      "Product code",
+      "Product name",
+      "Product price",
+      "Product min qty",
       "Status",
       "Edit",
       "Block",
@@ -51,7 +54,6 @@ function ProductMasterList() {
       status,
       productCategory
     );
-    console.log(users.data, "----");
     setProductMasterList(users.data);
     settotalpages(Math.ceil(users.totalCount / itemsPerPage));
     setLoading(false);
@@ -67,24 +69,20 @@ function ProductMasterList() {
     );
   }, []);
 
-  const handlePageChange = (value) => {
+  const handlePageChange = (event, value) => {
     setCurrentPage(value);
     getproductlist(value, searchCategory, searchName, searchCode, searchStatus);
-    console.log("@values", value);
   };
 
   const handleEdit = (id) => {
     navigate(`/master/productmaster/${id}`);
-    console.log("Edit button clicked", id);
   };
 
   const handleBlock = (id) => {
     navigate(`/master/productmaster/${id}`);
-    console.log("Block Button Clicked", id);
   };
 
   const handleSearch = () => {
-    // searchproductlist
     getproductlist(
       currentPage,
       searchName,
@@ -120,30 +118,27 @@ function ProductMasterList() {
                     id="search-1"
                     label="Search Product Name"
                     type="search"
-                    size="small"
                     onChange={(e) => setSearchName(e.target.value)}
                   />
-                  <TextField
-                    id="search-1"
+
+                  <Product_Category_Select
+                    id="search-2"
                     label="Search Product Catagory"
                     type="search"
-                    size="small"
                     onChange={(e) => setSearchCategory(e.target.value)}
                   />
 
                   <TextField
-                    id="search-1"
+                    id="search-3"
                     label="Search Product Code"
                     type="search"
-                    size="small"
                     onChange={(e) => setSearchCode(e.target.value)}
                   />
 
-                  <TextField
-                    id="search-1"
+                  <Status_Select
+                    id="search-4"
                     label="Search Product Status"
                     type="search"
-                    size="small"
                     onChange={(e) => setSearchStatus(e.target.value)}
                   />
                   <Button
@@ -186,11 +181,18 @@ function ProductMasterList() {
                             {item.productCategoryId}
                           </td>
                           <td className="border px-4 py-2">
+                            {item.productCode}
+                          </td>
+                          <td className="border px-4 py-2">
                             {item.productName}
                           </td>
                           <td className="border px-4 py-2">
-                            {item.productCode}
+                            {item.productPrice}
                           </td>
+                          <td className="border px-4 py-2">
+                            {item.productMinimumQty}
+                          </td>
+
                           <td className="border px-4 py-2">
                             {item.productStatus}
                           </td>

@@ -1,19 +1,15 @@
-//addition and updation
-import AdminNavbar from "../../../../../../components/Navbars/AdminNavbar";
-import Sidebar from "../../../../../../components/Sidebar/Sidebar";
-import HeaderStats from "../../../../../../components/Headers/HeaderStats";
-import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
+import AdminNavbar from "@/components/Navbars/AdminNavbar";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import HeaderStats from "@/components/Headers/HeaderStats";
+import FooterAdmin from "@/components/Footers/FooterAdmin";
 import Textarea from "@mui/joy/Textarea";
 import TextField from "@mui/material/TextField";
 import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
 import Product_Measureunits from "@/components/Product-Measures/Product_Measureunits";
 import Status_Select from "@/components/Status-Select/Status_Select";
-
 import * as Yup from "yup";
-
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
-
 import { Button } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
@@ -24,7 +20,7 @@ import {
 } from "../productmasterconfig";
 
 const product_ValidationSchema = Yup.object().shape({
-  productCategoryId: Yup.string().required("Please select product category Id"),
+  productCategoryid: Yup.string().required("Please select product category"),
   productCode: Yup.string().required("Please enter product code"),
   productName: Yup.string().required("Please enter product name"),
   productPrice: Yup.number().required("Please enter product price"),
@@ -34,15 +30,20 @@ const product_ValidationSchema = Yup.object().shape({
   ),
   productIGST: Yup.number()
     .required("Please enter product IGST")
-    .positive("Please enter a positive number"),
+    .positive("Please enter a positive number")
+    .max(28, "IGST cannot be more than 28"),
+
   productSGST: Yup.number()
     .required("Please enter product SGST")
-    .positive("Please enter a positive number"),
+    .positive("Please enter a positive number")
+    .max(28, "SGST cannot be more than 28"),
+
   productCGST: Yup.number()
     .required("Please enter product CGST")
-    .positive("Please enter a positive number"),
+    .positive("Please enter a positive number")
+    .max(28, "CGST cannot be more than 28"),
   productStatus: Yup.string().required("Please select product status"),
-  productDescription: Yup.string().required("Please enter product description"),
+  productDescription: Yup.string(),
 });
 
 function ProductMaster() {
@@ -63,7 +64,7 @@ function ProductMaster() {
   useEffect(() => {
     if (productData !== null) {
       formik.setValues({
-        productCategoryId: productData.data[0].productCategoryId || "",
+        productCategoryid: productData.data[0].productCategoryid || "",
         productCode: productData.data[0].productCode || "",
         productName: productData.data[0].productName || "",
         productPrice: productData.data[0].productPrice || "",
@@ -75,13 +76,12 @@ function ProductMaster() {
         productStatus: productData.data[0].productStatus || "",
         productDescription: productData.data[0].productDescription || "",
       });
-      console.log("@productData", productData);
     }
   }, [productData]);
 
   const formik = useFormik({
     initialValues: {
-      productCategoryId: "",
+      productCategoryid: "",
       productCode: "",
       productName: "",
       productPrice: "",
@@ -95,15 +95,13 @@ function ProductMaster() {
     },
     validationSchema: product_ValidationSchema,
     onSubmit: (values) => {
-      console.log("@Product", values);
-
       setTimeout(function () {
         window.location.replace("/master/productmasterlist");
       }, 2000);
       formik.resetForm();
       if (id == undefined) {
         PostProductList(values, 1);
-        toast.success("Submitted!", {
+        toast.success("Product added successfully.", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -115,7 +113,7 @@ function ProductMaster() {
         });
       } else {
         PutProductList(id, values);
-        toast.success("Updated!", {
+        toast.success("Product details updates successfully.", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -147,7 +145,6 @@ function ProductMaster() {
       <div className="relative md:ml-64 bg-blueGray-100">
         <AdminNavbar />
         <HeaderStats />
-
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
             <div className="rounded-t bg-white mb-0 px-6 py-6">
@@ -157,23 +154,21 @@ function ProductMaster() {
                 </h6>
               </div>
             </div>
-
             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
               <form onSubmit={formik.handleSubmit}>
                 {/* Product Category Select */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 mb-6">
                   <div>
                     <Product_Category_Select
-                      value={formik.values.productCategoryId}
+                      value={formik.values.productCategoryid}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.productCategoryId && (
+                    {formik.errors.productCategoryid && (
                       <p className="text-red-500 text-xs italic">
-                        {formik.errors.productCategoryId}
+                        {formik.errors.productCategoryid}
                       </p>
                     )}
                   </div>
-
                   {/* Product Code */}
                   <div>
                     <TextField
@@ -190,7 +185,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product Name */}
                   <div>
                     <TextField
@@ -207,7 +201,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product Price */}
                   <div>
                     <TextField
@@ -224,7 +217,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product Measure Unit Select */}
                   <div>
                     <Product_Measureunits
@@ -233,14 +225,12 @@ function ProductMaster() {
                       onChange={formik.handleChange}
                       className="shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
-                    {formik.touched.productMeasureUnit &&
-                      formik.errors.productMeasureUnit && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.productMeasureUnit}
-                        </p>
-                      )}
+                    {formik.errors.productMeasureUnit && (
+                      <p className="text-red-500 text-xs italic">
+                        {formik.errors.productMeasureUnit}
+                      </p>
+                    )}
                   </div>
-
                   {/* Product Minimum Quantity */}
                   <div>
                     <TextField
@@ -257,7 +247,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product IGST */}
                   <div>
                     <TextField
@@ -274,7 +263,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product SGST */}
                   <div>
                     <TextField
@@ -291,7 +279,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product CGST */}
                   <div>
                     <TextField
@@ -308,7 +295,6 @@ function ProductMaster() {
                       </p>
                     )}
                   </div>
-
                   {/* Product Status Select */}
                   <div>
                     <Status_Select
@@ -317,14 +303,12 @@ function ProductMaster() {
                       onChange={formik.handleChange}
                       classname="shadow appearance-none border rounded w-full  px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
-                    {formik.touched.productStatus &&
-                      formik.errors.productStatus && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.productStatus}
-                        </p>
-                      )}
+                    {formik.errors.productStatus && (
+                      <p className="text-red-500 text-xs italic">
+                        {formik.errors.productStatus}
+                      </p>
+                    )}
                   </div>
-
                   {/* Product Description */}
                   <div>
                     <Textarea
@@ -340,7 +324,6 @@ function ProductMaster() {
                       value={formik.values.productDescription}
                       onChange={formik.handleChange}
                     />
-
                     {formik.errors.productDescription && (
                       <p className="text-red-500 text-xs italic">
                         {formik.errors.productDescription}
@@ -352,7 +335,6 @@ function ProductMaster() {
                   <Button type="submit" variant="contained" color="primary">
                     Add
                   </Button>
-
                   <Link
                     to={"/master/productmasterlist"}
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded focus:outline-none focus:shadow-outline"
@@ -360,12 +342,10 @@ function ProductMaster() {
                     Back
                   </Link>
                 </div>
-
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </form>
             </div>
           </div>
-
           <FooterAdmin />
         </div>
       </div>
