@@ -1,12 +1,79 @@
+import React, { useEffect, useState } from "react";
 import AdminNavbar from "../../../../../../components/Navbars/AdminNavbar";
 import Sidebar from "../../../../../../components/Sidebar/Sidebar";
 import HeaderStats from "../../../../../../components/Headers/HeaderStats";
 import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
 import { TextField, Button } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  GetVendorMasterList,
+  PutVendorMasterList,
+} from "../vendormasterconfig.js";
+import Stack from "@mui/material/Stack";
+import CircularProgres from "@/components/Circular-Progress/CircularProgress";
+import Pagination from "@mui/material/Pagination";
 
+const VendorMasterList = () => {
+  const [searchName, setSearchName] = useState("");
+  const [searchContactNo, setSearchContactNo] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+  const [vendormasterlist, setVendorMasterList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [totalpages, settotalpages] = useState(1);
+  const itemsPerPage = 10;
+  const navigate = useNavigate();
 
-function VendorMasterList() {
+  const tableHead = {
+    col: [
+      "Sr No",
+      "Vendor Name",
+      "Vendor Contact No.",
+      "Status",
+      "Edit",
+      "Block",
+    ],
+  };
+
+  // Function to fetch vendor list with pagination
+  const getVendorList = async (page, name, contactNo, status) => {
+    setLoading(true);
+    const users = await GetVendorMasterList(
+      1,
+      page,
+      itemsPerPage,
+      name,
+      contactNo,
+      status
+    );
+    setVendorMasterList(users.data);
+    settotalpages(Math.ceil(users.totalCount / itemsPerPage));
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getVendorList(currentPage, searchName, searchContactNo, searchStatus);
+  }, []);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    getVendorList(value, searchName, searchContactNo, searchStatus);
+    console.log("@values", value);
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/masters/vendormaster/${id}`);
+    console.log("Edit button clicked", id);
+  };
+
+  const handleBlock = (id) => {
+    navigate(`/masters/vendormaster/${id}`);
+    console.log("Block Button Clicked", id);
+  };
+
+  const handleSearch = () => {
+    getVendorList(currentPage, searchName, searchContactNo, searchStatus);
+  };
 
   return (
     <>
@@ -31,44 +98,101 @@ function VendorMasterList() {
               </div>
               <br />
               <div className="container">
-                <div className=" grid grid-cols-1 lg:grid-cols-4 gap-4 mt-1 mb-4">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-1 mb-4">
                   <TextField
                     id="search-1"
                     label="Search Vendor Name"
                     type="search"
                     size="small"
+                    onChange={(e) => setSearchName(e.target.value)}
                   />
                   <TextField
                     id="search-2"
                     label="Search Vendor Contact No."
                     type="search"
                     size="small"
+                    onChange={(e) => setSearchContactNo(e.target.value)}
                   />
                   <TextField
                     id="search-3"
                     label="Search Vendor Status"
                     type="search"
                     size="small"
+                    onChange={(e) => setSearchStatus(e.target.value)}
                   />
-                  <Button variant="contained" className="button">
+                  <Button
+                    variant="contained"
+                    className="button"
+                    onClick={handleSearch}
+                  >
                     Search
                   </Button>
                 </div>
               </div>
             </div>
             <div className="container mx-auto px-4">
-              <table className="table-auto w-full">
-                <thead className="bg-gray-200">
-                  <tr>
-                    <th className="border px-4 py-2 text-left">S.No</th>
-                    <th className="border px-4 py-2 text-left">Vendor Name</th>
-                    <th className="border px-4 py-2 text-left">Vendor Code</th>
-                    <th className="border px-4 py-2 text-left">Status</th>
-                    <th className="border px-4 py-2 text-left">Actions</th>
-                  </tr>
-                </thead>
-              </table>
+              {loading ? (
+                <div className="flex justify-center mt-4">
+                  <CircularProgres />
+                </div>
+              ) : Array.isArray(vendormasterlist) &&
+                vendormasterlist.length > 0 ? (
+                <table className="table-auto w-full">
+                  <thead className="bg-gray-200">
+                    <tr>
+                      {tableHead.col.map((item, index) => (
+                        <th key={index} className="border px-4 py-2 text-left">
+                          {item}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {vendormasterlist.map((item, index) => (
+                      <tr key={item.id} className="bg-white">
+                        <td className="border px-4 py-2">
+                          {(currentPage - 1) * itemsPerPage + index + 1}
+                        </td>
+                        <td className="border px-4 py-2">{item.vendorName}</td>
+                        <td className="border px-4 py-2">
+                          {item.vendorContactNo}
+                        </td>
+                        <td className="border px-4 py-2">
+                          {item.vendorStatus}
+                        </td>
+                        <td className="border px-4 py-2">
+                          <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            onClick={() => handleEdit(item.id)}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                        <td className="border px-4 py-2">
+                          <button
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            onClick={() => handleBlock(item.id)}
+                          >
+                            Block
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div>No vendors found.</div>
+              )}
               <br />
+              <div className="flex justify-center mt-4">
+                <Stack spacing={2}>
+                  <Pagination
+                    count={totalpages}
+                    color="primary"
+                    onChange={handlePageChange}
+                  />
+                </Stack>
+              </div>
               <br />
             </div>
           </div>
@@ -77,6 +201,6 @@ function VendorMasterList() {
       </div>
     </>
   );
-}
+};
 
 export default VendorMasterList;

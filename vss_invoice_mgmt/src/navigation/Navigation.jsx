@@ -49,6 +49,10 @@ const router = createBrowserRouter([
     path: "/masters/vendormaster",
     element: <VendorMaster />,
   },
+  {
+    path: "/masters/vendormaster/:id",
+    element: <VendorMaster />
+  },  
 ]);
 
 function Navigation() {

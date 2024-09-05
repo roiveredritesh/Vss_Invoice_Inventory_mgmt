@@ -1,49 +1,49 @@
+import { useFormik } from "formik";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import HeaderStats from "@/components/Headers/HeaderStats";
 import FooterAdmin from "@/components/Footers/FooterAdmin";
 import AdminNavbar from "@/components/Navbars/AdminNavbar";
-import {
-  Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
-import { useFormik } from "formik";
 import Vendor_Statedropdown from "@/components/Vendor-State/Vendor_Statedropdown";
 import StatusSelect from "@/components/Status-Select/Status_Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  PostVendorMasterList,
+  GetVendorMasterById,
+  PutVendorMasterList,
+} from "../vendormasterconfig.js";
+import Textarea from "@mui/joy/Textarea";
 
 const vendormaster_ValidationSchema = Yup.object().shape({
-  vendorMasterName: Yup.string()
+  vendorName: Yup.string()
     .required("Please enter vendor master name")
     .min(3, "Vendor master name must be at least 3 characters")
     .max(30, "Vendor master name must not exceed 30 characters")
     .matches(/^[A-Za-z\s]+$/, "Name must contain letters"),
-  vendorMasterContactNumber: Yup.string()
+  vendorContactNo: Yup.string()
     .required("Please enter vendor master contact No.")
     .matches(/^[0-9]{10}$/, "Contact No. must be exactly 10 digits")
     .length(10, "Enter 10 digits contact no."),
-  vendorMasterAlternateContactNumber: Yup.string()
+  vendorAltContactNo: Yup.string()
     .required("Please enter vendor master alternate contact no.")
     .matches(/^[0-9]{10}$/, "Enter 10 digits contact no.")
     .length(10, "Contact No. must be exactly 10 digits"),
-  vendorMasterEmailId: Yup.string()
+  vendorEmailId: Yup.string()
     .required("Please enter vendor master email id")
-    .matches(/[A-Za-z0-9]{4}@gmail.com/, "Please enter a valid email address"),
-  vendorMasterAddress: Yup.string()
+    .email("Please enter a valid email id"),
+  vendorAddress: Yup.string()
     .required("Please enter vendor master address")
     .min(5, "Address must be at least 5 characters"),
-  vendorMasterPinCode: Yup.string()
+  vendorPincode: Yup.string()
     .required("Please enter vendor master pincode")
     .matches(/^[0-9]+$/, "Must be only number")
     .min(6, "Please enter a valid pincode")
     .max(6, "Please enter a valid pincode"),
-  vendorMasterGSTIN: Yup.string()
+  vendorGSTNo: Yup.string()
     .required("Please enter vendor master GST No.")
     .matches(
       /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/,
@@ -51,26 +51,81 @@ const vendormaster_ValidationSchema = Yup.object().shape({
     ),
 });
 
-function VendorMaster() {
+const VendorMaster = () => {
+  const { id } = useParams();
+  const [masterData, setMasterData] = useState(null);
+
+  const getVendorMaster = async (id) => {
+    const data = await GetVendorMasterById(id);
+    setMasterData(data);
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      getVendorMaster(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (masterData !== null) {
+      formik.setValues({
+        vendorName: masterData.data[0].vendorName || "",
+        vendorContactNo: masterData.data[0].vendorContactNo || "",
+        vendorAltContactNo: masterData.data[0].vendorAltContactNo || "",
+        vendorEmailId: masterData.data[0].vendorEmailId || "",
+        vendorAddress: masterData.data[0].vendorAddress || "",
+        vendorState: masterData.data[0].vendorState || "",
+        vendorPincode: masterData.data[0].vendorPincode || "",
+        vendorGSTNo: masterData.data[0].vendorGSTNo || "",
+        vendorStatus: masterData.data[0].vendorStatus || "",
+      });
+      console.log("@masterData", masterData);
+    }
+  }, [masterData]);
+
   const formik = useFormik({
     initialValues: {
-      vendorMasterName: "",
-      vendorMasterContactNumber: "",
-      vendorMasterAlternateContactNumber: "",
-      vendorMasterEmailId: "",
-      vendorMasterAddress: "",
-      vendorMasterState: "",
-      vendorMasterPinCode: "",
-      vendorMasterGSTIN: "",
-      vendorMasterStatus: "",
+      vendorName: "",
+      vendorContactNo: "",
+      vendorAltContactNo: "",
+      vendorEmailId: "",
+      vendorAddress: "",
+      vendorState: "",
+      vendorPincode: "",
+      vendorGSTNo: "",
+      vendorStatus: "",
     },
     validationSchema: vendormaster_ValidationSchema,
     onSubmit: (values) => {
       console.log("@Vendor Master", values);
-      try {
-        toast.success("Vendor master added successfully!");
-      } catch (error) {
-        toast.error("Failed to add vendor master. Please try again.");
+
+      setTimeout(() => {
+        window.location.replace("/master/vendormasterlist");
+      }, 2000);
+      if (id == undefined) {
+        PostVendorMasterList(values, 1);
+        toast.success("Vendor Master Added", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        PutVendorMasterList(id, values);
+        toast.success("Updated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
     },
   });
@@ -110,16 +165,15 @@ function VendorMaster() {
                     <div>
                       <TextField
                         fullWidth
-                        name="vendorMasterName"
+                        name="vendorName"
                         label="Enter Vendor Name"
                         variant="outlined"
-                        notched
-                        value={formik.values.vendorMasterName}
+                        value={formik.values.vendorName}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterName && (
+                      {formik.errors.vendorName && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterName}
+                          {formik.errors.vendorName}
                         </p>
                       )}
                     </div>
@@ -127,15 +181,15 @@ function VendorMaster() {
                     <div>
                       <TextField
                         fullWidth
-                        name="vendorMasterContactNumber"
+                        name="vendorContactNo"
                         label="Enter Vendor Contact No."
                         variant="outlined"
-                        value={formik.values.vendorMasterContactNumber}
+                        value={formik.values.vendorContactNo}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterContactNumber && (
+                      {formik.errors.vendorContactNo && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterContactNumber}
+                          {formik.errors.vendorContactNo}
                         </p>
                       )}
                     </div>
@@ -143,15 +197,15 @@ function VendorMaster() {
                     <div>
                       <TextField
                         fullWidth
-                        name="vendorMasterAlternateContactNumber"
+                        name="vendorAltContactNo"
                         label="Enter Vendor Alternate Contact No."
                         variant="outlined"
-                        value={formik.values.vendorMasterAlternateContactNumber}
+                        value={formik.values.vendorAltContactNo}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterAlternateContactNumber && (
+                      {formik.errors.vendorAltContactNo && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterAlternateContactNumber}
+                          {formik.errors.vendorAltContactNo}
                         </p>
                       )}
                     </div>
@@ -159,47 +213,49 @@ function VendorMaster() {
                     <div>
                       <TextField
                         fullWidth
-                        name="vendorMasterEmailId"
+                        name="vendorEmailId"
                         label="Enter Vendor Email Id"
                         variant="outlined"
-                        value={formik.values.vendorMasterEmailId}
+                        value={formik.values.vendorEmailId}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterEmailId && (
+                      {formik.errors.vendorEmailId && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterEmailId}
+                          {formik.errors.vendorEmailId}
                         </p>
                       )}
                     </div>
-                    {/* Vendor Address   */}
+                    {/* Vendor Address */}
                     <div>
-                      <TextField
+                      <Textarea
                         fullWidth
-                        name="vendorMasterAddress"
-                        label="Enter Vendor Address"
-                        variant="outlined"
-                        multiline
-                        value={formik.values.vendorMasterAddress}
+                        name="vendorAddress"
+                        placeholder="Enter Vendor Address"
+                        size="lg"
+                        className="custom-textarea"
+                        style={{backgroundColor:"rgba(241, 245, 249, var(--tw-bg-opacity))"}} 
+                        value={formik.values.vendorAddress}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterAddress && (
+
+                      {formik.errors.vendorAddress && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterAddress}
+                          {formik.errors.vendorAddress}
                         </p>
                       )}
                     </div>
                     {/* Vendor State */}
                     <div>
                       <Vendor_Statedropdown
-                        name="vendorMasterState"
-                        value={formik.values.vendorMasterState}
+                        name="vendorState"
+                        value={formik.values.vendorState}
                         onChange={formik.handleChange}
                         className="shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
-                      {formik.touched.vendorMasterState &&
-                        formik.errors.vendorMasterState && (
+                      {formik.touched.vendorState &&
+                        formik.errors.vendorState && (
                           <p className="text-red-500 text-xs italic">
-                            {formik.errors.vendorMasterState}
+                            {formik.errors.vendorState}
                           </p>
                         )}
                     </div>
@@ -207,15 +263,15 @@ function VendorMaster() {
                     <div>
                       <TextField
                         fullWidth
-                        name="vendorMasterPinCode"
+                        name="vendorPincode"
                         label="Enter Vendor State Pincode"
                         variant="outlined"
-                        value={formik.values.vendorMasterPinCode}
+                        value={formik.values.vendorPincode}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterPinCode && (
+                      {formik.errors.vendorPincode && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterPinCode}
+                          {formik.errors.vendorPincode}
                         </p>
                       )}
                     </div>
@@ -223,29 +279,29 @@ function VendorMaster() {
                     <div>
                       <TextField
                         fullWidth
-                        name="vendorMasterGSTIN"
+                        name="vendorGSTNo"
                         label="Enter Vendor GST No."
                         variant="outlined"
-                        value={formik.values.vendorMasterGSTIN}
+                        value={formik.values.vendorGSTNo}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorMasterGSTIN && (
+                      {formik.errors.vendorGSTNo && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterGSTIN}
+                          {formik.errors.vendorGSTNo}
                         </p>
                       )}
                     </div>
                     {/* Vendor Status */}
                     <div>
                       <StatusSelect
-                        name="vendorMasterStatus"
-                        value={formik.values.vendorMasterStatus}
+                        name="vendorStatus"
+                        value={formik.values.vendorStatus}
                         onChange={formik.handleChange}
                         className="shadow appearance-none border rounded w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
-                      {formik.errors.vendorMasterStatus && (
+                      {formik.errors.vendorStatus && (
                         <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorMasterStatus}
+                          {formik.errors.vendorStatus}
                         </p>
                       )}
                     </div>
@@ -271,6 +327,6 @@ function VendorMaster() {
       </div>
     </>
   );
-}
+};
 
 export default VendorMaster;
