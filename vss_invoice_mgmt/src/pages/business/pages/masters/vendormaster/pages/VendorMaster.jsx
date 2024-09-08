@@ -229,7 +229,6 @@ const VendorMaster = () => {
                     {/* Vendor Address */}
                     <div>
                       <Textarea
-                        fullWidth
                         name="vendorAddress"
                         placeholder="Enter Vendor Address"
                         size="lg"
