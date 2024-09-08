@@ -79,7 +79,6 @@ const VendorMaster = () => {
         vendorGSTNo: masterData.data[0].vendorGSTNo || "",
         vendorStatus: masterData.data[0].vendorStatus || "",
       });
-      console.log("@masterData", masterData);
     }
   }, [masterData]);
 
@@ -97,8 +96,6 @@ const VendorMaster = () => {
     },
     validationSchema: vendormaster_ValidationSchema,
     onSubmit: (values) => {
-      console.log("@Vendor Master", values);
-
       setTimeout(() => {
         window.location.replace("/master/vendormasterlist");
       }, 2000);
@@ -237,7 +234,10 @@ const VendorMaster = () => {
                         placeholder="Enter Vendor Address"
                         size="lg"
                         className="custom-textarea"
-                        style={{backgroundColor:"rgba(241, 245, 249, var(--tw-bg-opacity))"}} 
+                        style={{
+                          backgroundColor:
+                            "rgba(241, 245, 249, var(--tw-bg-opacity))",
+                        }}
                         value={formik.values.vendorAddress}
                         onChange={formik.handleChange}
                       />

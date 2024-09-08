@@ -36,7 +36,6 @@ const VendorMasterList = () => {
     ],
   };
 
-  // Function to fetch vendor list with pagination
   const getVendorList = async (page, name, contactNo, status) => {
     setLoading(true);
     try {
@@ -51,7 +50,6 @@ const VendorMasterList = () => {
       setVendorMasterList(users.data);
       settotalpages(Math.ceil(users.totalCount / itemsPerPage));
     } catch (error) {
-      console.error("Error fetching vendor master list:", error);
       setVendorMasterList([]);
       settotalpages(1);
     }
@@ -62,26 +60,22 @@ const VendorMasterList = () => {
     if (searchName === "" && searchStatus === "") {
       getVendorList(currentPage, "", "");
     }
-  }, [ searchName, searchStatus]);
+  }, [searchName, searchStatus]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     getVendorList(value, searchName, searchStatus);
-    console.log("@values", value);
   };
 
   const handleEdit = (id) => {
     navigate(`/masters/vendormaster/${id}`);
-    console.log("Edit button clicked", id);
   };
 
   const handleBlock = (id) => {
     navigate(`/masters/vendormaster/${id}`);
-    console.log("Block Button Clicked", id);
   };
 
   const handleSearch = () => {
-    
     setCurrentPage(currentPage);
     getVendorList(1, searchName, searchStatus);
   };
