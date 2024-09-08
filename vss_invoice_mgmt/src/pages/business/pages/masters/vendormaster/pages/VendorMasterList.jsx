@@ -59,12 +59,10 @@ const VendorMasterList = () => {
   };
 
   useEffect(() => {
-    setCurrentPage(1);
-
     if (searchName === "" && searchStatus === "") {
       getVendorList(currentPage, "", "");
     }
-  }, [searchName, searchStatus]);
+  }, [ searchName, searchStatus]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -83,8 +81,9 @@ const VendorMasterList = () => {
   };
 
   const handleSearch = () => {
-    setCurrentPage(1);
-    getVendorList(currentPage, searchName, searchStatus);
+    
+    setCurrentPage(currentPage);
+    getVendorList(1, searchName, searchStatus);
   };
 
   return (
@@ -121,6 +120,7 @@ const VendorMasterList = () => {
                     id="search-2"
                     label="Search Vendor Status"
                     onChange={(e) => setSearchStatus(e.target.value)}
+                    value={searchStatus || ""}
                   />
                   <Button
                     variant="contained"
