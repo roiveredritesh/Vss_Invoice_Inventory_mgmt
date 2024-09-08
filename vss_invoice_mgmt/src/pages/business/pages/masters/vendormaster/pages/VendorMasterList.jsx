@@ -12,6 +12,7 @@ import {
 import Stack from "@mui/material/Stack";
 import CircularProgres from "@/components/Circular-Progress/CircularProgress";
 import Pagination from "@mui/material/Pagination";
+import StatusSelect from "@/components/Status-Select/Status_Select";
 
 const VendorMasterList = () => {
   const [searchName, setSearchName] = useState("");
@@ -38,26 +39,36 @@ const VendorMasterList = () => {
   // Function to fetch vendor list with pagination
   const getVendorList = async (page, name, contactNo, status) => {
     setLoading(true);
-    const users = await GetVendorMasterList(
-      1,
-      page,
-      itemsPerPage,
-      name,
-      contactNo,
-      status
-    );
-    setVendorMasterList(users.data);
-    settotalpages(Math.ceil(users.totalCount / itemsPerPage));
+    try {
+      const users = await GetVendorMasterList(
+        1,
+        page,
+        itemsPerPage,
+        name,
+        contactNo,
+        status
+      );
+      setVendorMasterList(users.data);
+      settotalpages(Math.ceil(users.totalCount / itemsPerPage));
+    } catch (error) {
+      console.error("Error fetching vendor master list:", error);
+      setVendorMasterList([]);
+      settotalpages(1);
+    }
     setLoading(false);
   };
 
   useEffect(() => {
-    getVendorList(currentPage, searchName, searchContactNo, searchStatus);
-  }, []);
+    setCurrentPage(1);
+
+    if (searchName === "" && searchStatus === "") {
+      getVendorList(currentPage, "", "");
+    }
+  }, [searchName, searchStatus]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    getVendorList(value, searchName, searchContactNo, searchStatus);
+    getVendorList(value, searchName, searchStatus);
     console.log("@values", value);
   };
 
@@ -72,7 +83,8 @@ const VendorMasterList = () => {
   };
 
   const handleSearch = () => {
-    getVendorList(currentPage, searchName, searchContactNo, searchStatus);
+    setCurrentPage(1);
+    getVendorList(currentPage, searchName, searchStatus);
   };
 
   return (
@@ -98,26 +110,16 @@ const VendorMasterList = () => {
               </div>
               <br />
               <div className="container">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-1 mb-4">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-1 mb-4">
                   <TextField
                     id="search-1"
                     label="Search Vendor Name"
                     type="search"
-                    size="small"
                     onChange={(e) => setSearchName(e.target.value)}
                   />
-                  <TextField
+                  <StatusSelect
                     id="search-2"
-                    label="Search Vendor Contact No."
-                    type="search"
-                    size="small"
-                    onChange={(e) => setSearchContactNo(e.target.value)}
-                  />
-                  <TextField
-                    id="search-3"
                     label="Search Vendor Status"
-                    type="search"
-                    size="small"
                     onChange={(e) => setSearchStatus(e.target.value)}
                   />
                   <Button

@@ -167,6 +167,7 @@ const VendorMaster = () => {
                         fullWidth
                         name="vendorName"
                         label="Enter Vendor Name"
+                        type="search"
                         variant="outlined"
                         value={formik.values.vendorName}
                         onChange={formik.handleChange}
@@ -183,6 +184,7 @@ const VendorMaster = () => {
                         fullWidth
                         name="vendorContactNo"
                         label="Enter Vendor Contact No."
+                        type="search"
                         variant="outlined"
                         value={formik.values.vendorContactNo}
                         onChange={formik.handleChange}
@@ -199,6 +201,7 @@ const VendorMaster = () => {
                         fullWidth
                         name="vendorAltContactNo"
                         label="Enter Vendor Alternate Contact No."
+                        type="search"
                         variant="outlined"
                         value={formik.values.vendorAltContactNo}
                         onChange={formik.handleChange}
@@ -215,6 +218,7 @@ const VendorMaster = () => {
                         fullWidth
                         name="vendorEmailId"
                         label="Enter Vendor Email Id"
+                        type="search"
                         variant="outlined"
                         value={formik.values.vendorEmailId}
                         onChange={formik.handleChange}
@@ -265,6 +269,7 @@ const VendorMaster = () => {
                         fullWidth
                         name="vendorPincode"
                         label="Enter Vendor State Pincode"
+                        type="search"
                         variant="outlined"
                         value={formik.values.vendorPincode}
                         onChange={formik.handleChange}
@@ -281,6 +286,7 @@ const VendorMaster = () => {
                         fullWidth
                         name="vendorGSTNo"
                         label="Enter Vendor GST No."
+                        type="search"
                         variant="outlined"
                         value={formik.values.vendorGSTNo}
                         onChange={formik.handleChange}
