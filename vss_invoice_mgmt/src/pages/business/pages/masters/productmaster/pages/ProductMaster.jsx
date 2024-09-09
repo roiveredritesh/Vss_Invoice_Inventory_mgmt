@@ -20,7 +20,7 @@ import {
 } from "../productmasterconfig";
 
 const product_ValidationSchema = Yup.object().shape({
-  productCategoryid: Yup.string().required("Please select product category"),
+  productCategoryId: Yup.string().required("Please select product category"),
   productCode: Yup.string().required("Please enter product code"),
   productName: Yup.string().required("Please enter product name"),
   productPrice: Yup.number().required("Please enter product price"),
@@ -43,7 +43,6 @@ const product_ValidationSchema = Yup.object().shape({
     .positive("Please enter a positive number")
     .max(28, "CGST cannot be more than 28"),
   productStatus: Yup.string().required("Please select product status"),
-  productDescription: Yup.string(),
 });
 
 function ProductMaster() {
@@ -64,7 +63,7 @@ function ProductMaster() {
   useEffect(() => {
     if (productData !== null) {
       formik.setValues({
-        productCategoryid: productData.data[0].productCategoryid || "",
+        productCategoryId: productData.data[0].productCategoryId || "",
         productCode: productData.data[0].productCode || "",
         productName: productData.data[0].productName || "",
         productPrice: productData.data[0].productPrice || "",
@@ -81,7 +80,7 @@ function ProductMaster() {
 
   const formik = useFormik({
     initialValues: {
-      productCategoryid: "",
+      productCategoryId: "",
       productCode: "",
       productName: "",
       productPrice: "",
@@ -160,12 +159,12 @@ function ProductMaster() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 mb-6">
                   <div>
                     <Product_Category_Select
-                      value={formik.values.productCategoryid}
+                      value={formik.values.productCategoryId}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.productCategoryid && (
+                    {formik.errors.productCategoryId && (
                       <p className="text-red-500 text-xs italic">
-                        {formik.errors.productCategoryid}
+                        {formik.errors.productCategoryId}
                       </p>
                     )}
                   </div>
@@ -324,11 +323,6 @@ function ProductMaster() {
                       value={formik.values.productDescription}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.productDescription && (
-                      <p className="text-red-500 text-xs italic">
-                        {formik.errors.productDescription}
-                      </p>
-                    )}
                   </div>
                 </div>
                 <div className="flex items-end justify-end">

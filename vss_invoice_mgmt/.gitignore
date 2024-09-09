@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 launch.json
+
+# File remove from PR
+jsconfig.json

@@ -3,7 +3,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { GetProductCategoryList } from "@/pages/business/pages/masters/productcategory/productcategoryconfig";
 
-export default function Product_Category_Select({ value, onChange }) {
+export default function Product_Category_Select({ value, onChange, label }) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function Product_Category_Select({ value, onChange }) {
       onChange={(event, newValue) => {
         onChange({
           target: {
-            name: "productCategoryid",
+            name: "productCategoryId",
             value: newValue ? newValue.id : "",
           },
         });
@@ -52,7 +52,11 @@ export default function Product_Category_Select({ value, onChange }) {
       options={options}
       getOptionLabel={(option) => option.label || ""}
       renderInput={(params) => (
-        <TextField {...params} label="Product Category" variant="outlined" />
+        <TextField
+          {...params}
+          label={label || "Product Category"}
+          variant="outlined"
+        />
       )}
       fullWidth
     />

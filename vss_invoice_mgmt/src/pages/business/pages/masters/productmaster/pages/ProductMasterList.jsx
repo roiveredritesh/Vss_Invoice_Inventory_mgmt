@@ -5,46 +5,48 @@ import HeaderStats from "@/components/Headers/HeaderStats";
 import FooterAdmin from "@/components/Footers/FooterAdmin";
 import { TextField, Button } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  GetProductList,
-  SearchProductMasterList,
-} from "../productmasterconfig";
+import { GetProductList } from "../productmasterconfig";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import CircularProgres from "@/components/Circular-Progress/CircularProgress";
+import CircularProgress from "@/components/Circular-Progress/CircularProgress";
 import Status_Select from "@/components/Status-Select/Status_Select";
 import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
 
 function ProductMasterList() {
-  const [searchName, setSearchName] = useState("");
-  const [searchCategory, setSearchCategory] = useState("");
-  const [searchCode, setSearchCode] = useState("");
-  const [searchStatus, setSearchStatus] = useState("");
+  const [filters, setFilters] = useState({
+    name: "",
+    category: "",
+    code: "",
+    status: "",
+  });
 
   const [productmasterlist, setProductMasterList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [totalpages, settotalpages] = useState(1);
-  const itemsPerPage = 10;
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalpages: 1,
+    itemsPerPage: 10,
+  });
 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const tableHead = {
-    col: [
-      "Sr. No.",
-      "Product Category name ",
-      "Product code",
-      "Product name",
-      "Product price",
-      "Product min qty",
-      "Status",
-      "Edit",
-      "Block",
-    ],
-  };
+  const tableHead = [
+    "Sr. No.",
+    "Product Category Name",
+    "Product Code",
+    "Product Name",
+    "Product Price",
+    "Product Min Qty",
+    "Status",
+    "Edit",
+    "Block",
+  ];
 
-  const getproductlist = async (page, name, code, status, productCategory) => {
+  const getproductlist = async (page) => {
     setLoading(true);
+    const { name, category, code, status } = filters;
+    const { itemsPerPage } = pagination;
+
     const users = await GetProductList(
       1,
       page,
@@ -52,44 +54,33 @@ function ProductMasterList() {
       name,
       code,
       status,
-      productCategory
+      category
     );
     setProductMasterList(users.data);
-    settotalpages(Math.ceil(users.totalCount / itemsPerPage));
+    setPagination((prev) => ({
+      ...prev,
+      totalpages: Math.ceil(users.totalCount / itemsPerPage),
+    }));
     setLoading(false);
   };
 
   useEffect(() => {
-    getproductlist(
-      currentPage,
-      searchName,
-      searchCode,
-      searchStatus,
-      searchCategory
-    );
+    getproductlist(pagination.currentPage);
   }, []);
 
   const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-    getproductlist(value, searchCategory, searchName, searchCode, searchStatus);
+    setPagination((prev) => ({ ...prev, currentPage: value }));
+    getproductlist(value);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/master/productmaster/${id}`);
-  };
+  const handleEdit = (id) => navigate(`/master/productmaster/${id}`);
+  const handleBlock = (id) => navigate(`/master/productmaster/${id}`);
 
-  const handleBlock = (id) => {
-    navigate(`/master/productmaster/${id}`);
-  };
+  const handleSearch = () => getproductlist(pagination.currentPage);
 
-  const handleSearch = () => {
-    getproductlist(
-      currentPage,
-      searchName,
-      searchCategory,
-      searchCode,
-      searchStatus
-    );
+  const updateFilter = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -112,34 +103,38 @@ function ProductMasterList() {
                   Add Product
                 </NavLink>
               </div>
-              <div className="container ">
+              <div className="container">
                 <div className="wrapper search-container grid grid-cols-1 lg:grid-cols-5 gap-4 mt-4 mb-4">
                   <TextField
                     id="search-1"
                     label="Search Product Name"
+                    name="name"
                     type="search"
-                    onChange={(e) => setSearchName(e.target.value)}
+                    onChange={updateFilter}
                   />
 
                   <Product_Category_Select
                     id="search-2"
-                    label="Search Product Catagory"
+                    label="Search Product Category"
+                    name="category"
                     type="search"
-                    onChange={(e) => setSearchCategory(e.target.value)}
+                    onChange={updateFilter}
                   />
 
                   <TextField
                     id="search-3"
                     label="Search Product Code"
+                    name="code"
                     type="search"
-                    onChange={(e) => setSearchCode(e.target.value)}
+                    onChange={updateFilter}
                   />
 
                   <Status_Select
                     id="search-4"
                     label="Search Product Status"
+                    name="status"
                     type="search"
-                    onChange={(e) => setSearchStatus(e.target.value)}
+                    onChange={updateFilter}
                   />
                   <Button
                     variant="contained"
@@ -154,14 +149,14 @@ function ProductMasterList() {
             <div className="container mx-auto px-4">
               {loading ? (
                 <div className="flex justify-center mt-4">
-                  <CircularProgres />
+                  <CircularProgress />
                 </div>
               ) : (
                 Array.isArray(productmasterlist) && (
                   <table className="table-auto w-full">
                     <thead className="bg-gray-200">
                       <tr>
-                        {tableHead.col.map((item, index) => (
+                        {tableHead.map((item, index) => (
                           <th
                             key={index}
                             className="border px-4 py-2 text-left"
@@ -172,40 +167,40 @@ function ProductMasterList() {
                       </tr>
                     </thead>
                     <tbody>
-                      {productmasterlist.map((item, index) => (
+                      {productmasterlist.map((product, index) => (
                         <tr key={index} className="bg-white">
                           <td className="border px-4 py-2">
-                            {(currentPage - 1) * itemsPerPage + index + 1}
+                            {(pagination.currentPage - 1) *
+                              pagination.itemsPerPage +
+                              index +
+                              1}
                           </td>
                           <td className="border px-4 py-2">
-                            {item.productCategoryId}
+                            {product.productCategoryId}
                           </td>
                           <td className="border px-4 py-2">
-                            {item.productCode}
+                            {product.productCode}
                           </td>
                           <td className="border px-4 py-2">
-                            {item.productName}
+                            {product.productName}
                           </td>
                           <td className="border px-4 py-2">
-                            {item.productPrice}
+                            {product.productPrice}
                           </td>
                           <td className="border px-4 py-2">
-                            {item.productMinimumQty}
+                            {product.productMinimumQty}
                           </td>
-
                           <td className="border px-4 py-2">
-                            {item.productStatus}
+                            {product.productStatus}
                           </td>
-
                           <td className="border px-4 py-2">
                             <button
                               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                              onClick={() => handleEdit(item.id)}
+                              onClick={() => handleEdit(product.id)}
                             >
                               Edit
                             </button>
                           </td>
-
                           <td className="border px-4 py-2">
                             <button
                               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -220,12 +215,11 @@ function ProductMasterList() {
                   </table>
                 )
               )}
-
               <br />
               <div className="flex justify-center mt-4">
                 <Stack spacing={2}>
                   <Pagination
-                    count={totalpages}
+                    count={pagination.totalpages}
                     color="primary"
                     onChange={handlePageChange}
                   />
@@ -240,4 +234,5 @@ function ProductMasterList() {
     </>
   );
 }
+
 export default ProductMasterList;

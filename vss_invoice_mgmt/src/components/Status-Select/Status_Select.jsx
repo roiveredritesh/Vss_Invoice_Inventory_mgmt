@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import { statuses } from "@/constants/index";
 
 function Status_Select(props) {
-  const { classname, value, name, onChange } = props;
+  const { classname, value, name, onChange, label } = props;
 
   const handleStatusChange = (event) => {
     const newValue = event.target.value;
@@ -22,9 +22,9 @@ function Status_Select(props) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel>Status</InputLabel>
+        <InputLabel>{label || "Status"}</InputLabel>
         <Select
-          label="Status"
+          label={label || "Status"}
           className={classname}
           value={value}
           onChange={handleStatusChange}
