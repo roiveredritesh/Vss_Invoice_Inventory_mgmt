@@ -1,4 +1,4 @@
-export const vendorstate = [
+export const statename = [
     "Andhra Pradesh",
     "Arunachal Pradesh",
     "Assam",

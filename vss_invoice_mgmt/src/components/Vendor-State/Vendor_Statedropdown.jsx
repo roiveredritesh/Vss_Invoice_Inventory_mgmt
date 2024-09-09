@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { vendorstate } from "@/constants/vendorstatedropdown";
+import { statename } from "@/constants/statedropdown";
 
 function Vendor_Statedropdown(props) {
     const { classname, value, name, onChange} = props;
@@ -29,7 +29,7 @@ function Vendor_Statedropdown(props) {
                   value = {value}
                   onChange={handleStateChange}
                 >
-                  {vendorstate.map((state) => (
+                  {statename.map((state) => (
                     <MenuItem key={state} value={state}>
                         {state}
                     </MenuItem>

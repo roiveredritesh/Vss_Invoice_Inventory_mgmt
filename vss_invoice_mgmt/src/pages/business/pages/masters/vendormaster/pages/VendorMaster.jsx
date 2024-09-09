@@ -20,31 +20,31 @@ import Textarea from "@mui/joy/Textarea";
 
 const vendormaster_ValidationSchema = Yup.object().shape({
   vendorName: Yup.string()
-    .required("Please enter vendor master name")
-    .min(3, "Vendor master name must be at least 3 characters")
-    .max(30, "Vendor master name must not exceed 30 characters")
+    .required("Please enter vendor name")
+    .min(3, "Vendor name must be at least 3 characters")
+    .max(30, "Vendor name must not exceed 30 characters")
     .matches(/^[A-Za-z\s]+$/, "Name must contain letters"),
   vendorContactNo: Yup.string()
-    .required("Please enter vendor master contact No.")
+    .required("Please enter vendor contact No.")
     .matches(/^[0-9]{10}$/, "Contact No. must be exactly 10 digits")
     .length(10, "Enter 10 digits contact no."),
   vendorAltContactNo: Yup.string()
-    .required("Please enter vendor master alternate contact no.")
-    .matches(/^[0-9]{10}$/, "Enter 10 digits contact no.")
-    .length(10, "Contact No. must be exactly 10 digits"),
+    .required("Please enter vendor alternate contact no.")
+    .matches(/^[0-9]{10}$/, "Contact No. must be exactly 10 digits")
+    .length(10, "Enter 10 digits contact no."),
   vendorEmailId: Yup.string()
-    .required("Please enter vendor master email id")
+    .required("Please enter vendor email id")
     .email("Please enter a valid email id"),
   vendorAddress: Yup.string()
-    .required("Please enter vendor master address")
+    .required("Please enter vendor address")
     .min(5, "Address must be at least 5 characters"),
   vendorPincode: Yup.string()
-    .required("Please enter vendor master pincode")
+    .required("Please enter vendor pincode")
     .matches(/^[0-9]+$/, "Must be only number")
     .min(6, "Please enter a valid pincode")
     .max(6, "Please enter a valid pincode"),
   vendorGSTNo: Yup.string()
-    .required("Please enter vendor master GST No.")
+    .required("Please enter vendor GST No.")
     .matches(
       /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/,
       "Invalid GST Number"
@@ -101,7 +101,7 @@ const VendorMaster = () => {
       }, 2000);
       if (id == undefined) {
         PostVendorMasterList(values, 1);
-        toast.success("Vendor Master Added", {
+        toast.success("Submitted!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -324,7 +324,7 @@ const VendorMaster = () => {
                   </Link>
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
-              </form>
+              </form>̥
             </div>
           </div>
           <FooterAdmin />
