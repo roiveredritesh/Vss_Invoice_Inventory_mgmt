@@ -24,15 +24,15 @@ dist-ssr
 *.sw?
 launch.json
 
-# ignore some files
+# Ignore specific files
 package.json
 index.html
 jsconfig.json
 package-lock.json
 
-# Ignore the productmeasureunit.js file
-D:/project/Vss_Invoice_Inventory_mgmt/vss_invoice_mgmt/src/constants/productmeasureunit.js
+# Ignore specific files
+/src/constants/productmeasureunit.js
 
-# Ignore the entire productmaster directory
-D:/project/Vss_Invoice_Inventory_mgmt/vss_invoice_mgmt/src/pages/business/pages/masters/productmaster/
+# Ignore specific directories
+/src/pages/business/pages/masters/productmaster/
 
