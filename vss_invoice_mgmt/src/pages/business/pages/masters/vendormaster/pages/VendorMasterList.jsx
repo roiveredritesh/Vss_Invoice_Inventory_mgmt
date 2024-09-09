@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AdminNavbar from "../../../../../../components/Navbars/AdminNavbar";
-import Sidebar from "../../../../../../components/Sidebar/Sidebar";
-import HeaderStats from "../../../../../../components/Headers/HeaderStats";
-import FooterAdmin from "../../../../../../components/Footers/FooterAdmin";
+import AdminNavbar from "@/components/Navbars/AdminNavbar";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import HeaderStats from "@/components/Headers/HeaderStats";
+import FooterAdmin from "@/components/Footers/FooterAdmin";
 import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
