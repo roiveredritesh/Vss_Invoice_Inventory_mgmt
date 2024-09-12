@@ -43,12 +43,14 @@ const vendormaster_ValidationSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Must be only number")
     .min(6, "Please enter a valid pincode")
     .max(6, "Please enter a valid pincode"),
+  vendorState: Yup.string().required("Please select state"),
   vendorGSTNo: Yup.string()
     .required("Please enter vendor GST No.")
     .matches(
       /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/,
       "Invalid GST Number"
     ),
+  vendorStatus: Yup.string().required("Please select status"),
 });
 
 const VendorMaster = () => {
@@ -169,11 +171,12 @@ const VendorMaster = () => {
                         value={formik.values.vendorName}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorName && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorName}
-                        </p>
-                      )}
+                      {formik.touched.vendorName &&
+                        formik.errors.vendorName && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorName}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor Contact No. */}
                     <div>
@@ -186,11 +189,12 @@ const VendorMaster = () => {
                         value={formik.values.vendorContactNo}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorContactNo && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorContactNo}
-                        </p>
-                      )}
+                      {formik.touched.vendorContactNo &&
+                        formik.errors.vendorContactNo && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorContactNo}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor Alternate Contact No. */}
                     <div>
@@ -203,11 +207,12 @@ const VendorMaster = () => {
                         value={formik.values.vendorAltContactNo}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorAltContactNo && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorAltContactNo}
-                        </p>
-                      )}
+                      {formik.touched.vendorAltContactNo &&
+                        formik.errors.vendorAltContactNo && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorAltContactNo}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor Email id */}
                     <div>
@@ -220,11 +225,12 @@ const VendorMaster = () => {
                         value={formik.values.vendorEmailId}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorEmailId && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorEmailId}
-                        </p>
-                      )}
+                      {formik.touched.vendorEmailId &&
+                        formik.errors.vendorEmailId && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorEmailId}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor Address */}
                     <div>
@@ -242,11 +248,12 @@ const VendorMaster = () => {
                         onChange={formik.handleChange}
                       />
 
-                      {formik.errors.vendorAddress && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorAddress}
-                        </p>
-                      )}
+                      {formik.touched.vendorAddress &&
+                        formik.errors.vendorAddress && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorAddress}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor State */}
                     <div>
@@ -274,11 +281,12 @@ const VendorMaster = () => {
                         value={formik.values.vendorPincode}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorPincode && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorPincode}
-                        </p>
-                      )}
+                      {formik.touched.vendorPincode &&
+                        formik.errors.vendorPincode && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorPincode}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor GSTIN */}
                     <div>
@@ -291,11 +299,12 @@ const VendorMaster = () => {
                         value={formik.values.vendorGSTNo}
                         onChange={formik.handleChange}
                       />
-                      {formik.errors.vendorGSTNo && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorGSTNo}
-                        </p>
-                      )}
+                      {formik.touched.vendorGSTNo &&
+                        formik.errors.vendorGSTNo && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorGSTNo}
+                          </p>
+                        )}
                     </div>
                     {/* Vendor Status */}
                     <div>
@@ -305,11 +314,12 @@ const VendorMaster = () => {
                         onChange={formik.handleChange}
                         className="shadow appearance-none border rounded w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
-                      {formik.errors.vendorStatus && (
-                        <p className="text-red-500 text-xs italic">
-                          {formik.errors.vendorStatus}
-                        </p>
-                      )}
+                      {formik.touched.vendorStatus &&
+                        formik.errors.vendorStatus && (
+                          <p className="text-red-500 text-xs italic">
+                            {formik.errors.vendorStatus}
+                          </p>
+                        )}
                     </div>
                   </div>
                 </div>
