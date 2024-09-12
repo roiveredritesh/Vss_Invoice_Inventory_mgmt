@@ -7,7 +7,7 @@ import { Button, TextField } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
-import State_Dropdown from "./../../../../../../components/Vendor-State/State_Dropdown";
+import State_Dropdown from "@/components/Vendor-State/State_Dropdown";
 import StatusSelect from "@/components/Status-Select/Status_Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +17,7 @@ import {
   PutVendorMasterList,
 } from "../vendormasterconfig.js";
 import Textarea from "@mui/joy/Textarea";
+import FloatingLabelTextarea from "./../../../../../../components/Textarea/Textarea";
 
 const vendormaster_ValidationSchema = Yup.object().shape({
   vendorName: Yup.string()
@@ -233,28 +234,13 @@ const VendorMaster = () => {
                         )}
                     </div>
                     {/* Vendor Address */}
-                    <div>
-                      <Textarea
-                        id="vendorAddress"
-                        name="vendorAddress"
-                        placeholder="Enter Vendor Address"
-                        size="lg"
-                        className="custom-textarea"
-                        style={{
-                          backgroundColor:
-                            "rgba(241, 245, 249, var(--tw-bg-opacity))",
-                        }}
-                        value={formik.values.vendorAddress}
-                        onChange={formik.handleChange}
-                      />
+                    <FloatingLabelTextarea
+                      name="vendorAddress"
+                      label="Enter Vendor Address"
+                      value={formik.values.vendorAddress}
+                      onChange={formik.handleChange}
+                    />
 
-                      {formik.touched.vendorAddress &&
-                        formik.errors.vendorAddress && (
-                          <p className="text-red-500 text-xs italic">
-                            {formik.errors.vendorAddress}
-                          </p>
-                        )}
-                    </div>
                     {/* Vendor State */}
                     <div>
                       <State_Dropdown
