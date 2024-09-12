@@ -2,7 +2,6 @@ import AdminNavbar from "@/components/Navbars/AdminNavbar";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import HeaderStats from "@/components/Headers/HeaderStats";
 import FooterAdmin from "@/components/Footers/FooterAdmin";
-import Textarea from "@mui/joy/Textarea";
 import TextField from "@mui/material/TextField";
 import Product_Category_Select from "@/components/Product-Category-Select/Product_Category_Select";
 import Product_Measureunits from "@/components/Product-Measures/Product_Measureunits";
@@ -18,6 +17,7 @@ import {
   GetProductById,
   PutProductList,
 } from "../productmasterconfig";
+import FloatingLabelTextarea from "@/components/Textarea/Textarea";
 
 const product_ValidationSchema = Yup.object().shape({
   productCategoryId: Yup.string().required("Please select product category"),
@@ -310,16 +310,9 @@ function ProductMaster() {
                   </div>
                   {/* Product Description */}
                   <div>
-                    <Textarea
+                    <FloatingLabelTextarea
                       name="productDescription"
                       label="Product Description"
-                      minRows={2}
-                      variant="outlined"
-                      placeholder="Product Description"
-                      size="lg"
-                      sx={{
-                        backgroundColor: "transparent",
-                      }}
                       value={formik.values.productDescription}
                       onChange={formik.handleChange}
                     />
