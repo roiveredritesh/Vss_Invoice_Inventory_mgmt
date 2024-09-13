@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { Box, Typography } from "@mui/material";
 
-function FloatingLabelTextarea({ name, value, onChange, label, placeholder }) {
+function FloatingLabelTextarea({ name, value, onChange, label }) {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => {
@@ -23,12 +23,13 @@ function FloatingLabelTextarea({ name, value, onChange, label, placeholder }) {
         sx={{
           position: "absolute",
           left: 12,
-          top: isFocused || value ? -10 : 20,
+          top: isFocused || value ? -10 : 15,
           fontSize: isFocused || value ? 12 : 16,
           color: isFocused ? "#2563eb" : "rgba(0, 0, 0, 0.6)",
           transition: "all 0.2s ease",
           backgroundColor: "#f1f5f9",
           padding: "0 4px",
+          pointerEvents: "none",
         }}
       >
         {label}
@@ -37,19 +38,19 @@ function FloatingLabelTextarea({ name, value, onChange, label, placeholder }) {
       {/* Textarea component */}
       <TextareaAutosize
         name={name}
-        minRows={2}
         value={value}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={onChange}
         style={{
           width: "100%",
-          padding: "25px 14px 6px 14px",
+          padding: "14px",
+          height: "30px",
           borderRadius: "4px",
           border: "1px solid rgba(0, 0, 0, 0.23)",
-          outlineColor: isFocused ? "#2563eb" : "rgba(0, 0, 0, 0.23)",
           transition: "border-color 0.2s ease",
           backgroundColor: "transparent",
+          boxSizing: "border-box",
         }}
       />
     </Box>
