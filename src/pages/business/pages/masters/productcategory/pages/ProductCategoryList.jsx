@@ -60,17 +60,14 @@ const ProductCategoryList = () => {
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     getproductlist(value, searchName, searchCode, searchStatus);
-    console.log("@values", value);
   };
 
   const handleEdit = (id) => {
     navigate(`/masters/productcategory/${id}`);
-    console.log("Edit button clicked", id);
   };
 
   const handleBlock = (id) => {
     navigate(`/masters/productcategory/${id}`);
-    console.log("Block Button Clicked", id);
   };
 
   const handleSearch = () => {

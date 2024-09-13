@@ -38,6 +38,11 @@ const router = createBrowserRouter([
     path: "/master/productmasterlist",
     element: <ProductMasterList />,
   },
+
+  {
+    path: "/master/productmaster/:id",
+    element: <ProductMaster />,
+  },
 ]);
 
 function Navigation() {
